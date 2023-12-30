@@ -52,3 +52,24 @@ from dado_bancario db
     on db.numero_do_banco = cb.compe
 where p.ativo = true
 ```
+
+* Save cvs file from metabase
+
+
+### connect to database via psql
+
+```shell
+psql postgres://<username>:<password>@<host>:<port>/<database>
+
+# for example
+psql postgres://postgres:postgres@localhost:5432/postgres
+```
+
+### execute csv file into database (postgresql shell)
+```shell
+=# \copy allowed_transfer_account from '/path/to/file/csv/partners.csv' delimiter ',' CSV HEADER;
+```
+
+
+### Documentation
+https://hasura.io/docs/latest/schema/postgres/postgres-guides/import-data-from-csv/

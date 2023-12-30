@@ -28,13 +28,13 @@ select
             else 'CACC'
         end as account_type,
         db.chave_pix as pix_transfer_key,
-        'P' as receiver_type,
+        'F' as receiver_type,
         true as active,
         case
             when db.created_ds is not null then db.created_ds
             else ' ' 
         end as created_ds,
-        p.cnpj as document_number,
+        f.cnpj as document_number,
         row_number() over () as event_id,
         db.created_at as created_at,
         case 
@@ -46,11 +46,11 @@ select
             else db.agencia
         end as branch_digit
 from dado_bancario db
-    inner join parceiro p 
-    on db.id = p.dado_bancario_id
+    inner join fornecedor f 
+    on db.id = f.dado_bancario_id
     left join codigo_bancario cb
     on db.numero_do_banco = cb.compe
-where p.ativo = true
+where f.ativo = true
 ```
 
 * Save cvs file from metabase
@@ -68,6 +68,7 @@ psql postgres://postgres:postgres@localhost:5432/postgres
 
 ### execute csv file into database (postgresql shell)
 - How can use psql -> https://hasura.io/docs/latest/schema/postgres/postgres-guides/import-data-from-csv/
+
 ```shell
-=# \copy allowed_transfer_account from '/path/to/file/csv/partners.csv' delimiter ',' CSV HEADER;
+=# \copy allowed_transfer_account from '/path/to/file/csv/suppliers.csv' delimiter ',' CSV HEADER;
 ```

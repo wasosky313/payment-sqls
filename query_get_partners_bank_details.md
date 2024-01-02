@@ -3,7 +3,6 @@
 ### PARTNERS
 ```sql
 select 
-        
         p.razao_social as owner_name,
         db.agencia as account_branch,
         case
@@ -11,7 +10,7 @@ select
             else db.conta
         end as account_digit,
         case
-            when db.conta is not null then left(db.conta, length(db.conta) - 1)
+            when db.conta is not null then replace(left(db.conta, length(db.conta) - 1), '-', '')
             else db.conta
         end as account_number,
         case
@@ -39,7 +38,7 @@ from dado_bancario db
     left join codigo_bancario cb
     on db.numero_do_banco = cb.compe
 where p.ativo = true
-
+	and (db.conta <> '12345-1' or db.conta is null);
 ```
 
 * Save cvs file from metabase

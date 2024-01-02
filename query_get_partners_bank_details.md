@@ -3,15 +3,9 @@
 ### PARTNERS
 ```sql
 select 
-        case
-            when trim(db.banco) = '' then ' '
-            when db.banco is not null then db.banco
-            else ' '
-        end as owner_name,
-        case
-            when db.agencia is not null then left(trim(db.agencia), length(trim(db.agencia)) - 1)
-            else db.agencia
-        end as account_branch,
+        
+        p.razao_social as owner_name,
+        db.agencia as account_branch,
         case
             when db.conta is not null then right(db.conta, 1)
             else db.conta
@@ -37,20 +31,15 @@ select
         p.cnpj as document_number,
         row_number() over () as event_id,
         db.created_at as created_at,
-        case 
-            when cb.ispb is not null then cb.ispb
-            else null
-        end as ispb_number,
-        case
-            when db.agencia is not null then right(db.agencia, 1)
-            else db.agencia
-        end as branch_digit
+        cb.ispb as ispb_number,
+        null as branch_digit
 from dado_bancario db
     inner join parceiro p 
     on db.id = p.dado_bancario_id
     left join codigo_bancario cb
     on db.numero_do_banco = cb.compe
 where p.ativo = true
+
 ```
 
 * Save cvs file from metabase

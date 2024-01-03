@@ -4,7 +4,7 @@
 ```sql
 select 
         p.razao_social as owner_name,
-        db.agencia as account_branch,
+        trim(replace(db.agencia, '-', '')) as account_branch,
         case
             when db.conta is not null then right(db.conta, 1)
             else db.conta

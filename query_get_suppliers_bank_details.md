@@ -36,15 +36,9 @@ from dado_bancario db
     inner join fornecedor f on db.id = f.dado_bancario_id
     left join codigo_bancario cb on db.numero_do_banco = cb.compe
 where f.ativo = true
-	and (db.conta <> '12345-1' or db.conta is null);
+	and (db.conta <> '12345-1' or db.conta is null)
+	and f.cnpj <> '31.931.053/0001-50';
 
-
-
-select * from dado_bancario db
-    inner join fornecedor f on db.id = f.dado_bancario_id
-    left join codigo_bancario cb on db.numero_do_banco = cb.compe
-where f.ativo = true
-	and (db.conta <> '12345-1' or db.conta is null);
 ```
 
 * Save cvs file from metabase

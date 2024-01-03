@@ -6,7 +6,7 @@ select
         p.razao_social as owner_name,
         trim(replace(db.agencia, '-', '')) as account_branch,
         case
-            when db.conta is not null then right(db.conta, 1)
+            when db.conta is not null then right(trim(db.conta), 1)
             else db.conta
         end as account_digit,
         case
@@ -27,16 +27,14 @@ select
             when db.created_ds is not null then db.created_ds
             else ' ' 
         end as created_ds,
-        p.cnpj as document_number,
-        row_number() over () as event_id,
+        regexp_replace(p.cnpj, '[^0-9]', '', 'g') AS document_number,
+        1 as event_id,
         db.created_at as created_at,
         cb.ispb as ispb_number,
         null as branch_digit
 from dado_bancario db
-    inner join parceiro p 
-    on db.id = p.dado_bancario_id
-    left join codigo_bancario cb
-    on db.numero_do_banco = cb.compe
+    inner join parceiro p on db.id = p.dado_bancario_id
+    left join codigo_bancario cb on db.numero_do_banco = cb.compe
 where p.ativo = true
 	and (db.conta <> '12345-1' or db.conta is null);
 ```
